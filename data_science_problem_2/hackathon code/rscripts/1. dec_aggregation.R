@@ -1,0 +1,116 @@
+driver_job<- read.csv('D:/Hackathon/PredictDriverChurn-DataSet/1. Driver_Job_Details - CSV.csv')
+master_driver <- read.csv('D:/Hackathon/PredictDriverChurn-DataSet/4. Driver_Master - CSV.csv')
+driver_job$VOC_SATISFACTION <- as.character(driver_job$VOC_SATISFACTION)
+driver_job$VOC_SATISFACTION<-as.numeric(driver_job$VOC_SATISFACTION)
+
+
+
+range(driver_job$Delivery_Date)# fixing date
+driver_job$Delivery_Date <- as.character(driver_job$Delivery_Date)
+library(lubridate)
+driver_job$Delivery_Date <- dmy(driver_job$Delivery_Date)
+driver_job<-driver_job[driver_job$Delivery_Date<='2018-04-30' & driver_job$Delivery_Date>='2018-02-01',]
+
+
+# adding column churn status
+library('dplyr')
+get_latest_ride <- function(df){
+  sample <- df %>% 
+    group_by(Driver_Id) %>%
+    slice(which.max(Delivery_Date))
+  return(sample)}
+
+get_first_ride <- function(df){
+  sample <- df %>% 
+    group_by(Driver_Id) %>%
+    slice(which.min(Delivery_Date))
+  return(sample)}
+
+# sample <- get_latest_ride(driver_job)
+# active_driver <- sample[substr(as.character(sample$Delivery_Date),1,7) >= '2018-03', ]
+# active_driver$churn_status <- F
+# active_driver<-subset(active_driver,,c('Driver_Id','churn_status'))
+# new_drive_job<- merge(active_driver,driver_job,all.y = T)
+# new_drive_job[is.na(new_drive_job$churn_status)==T,'churn_status']<-T
+
+############################################################################
+############## Aggregating data
+install.packages("SVMisC")
+library(svMisc)
+drivers <- unique(driver_job$Driver_Id)
+driver_rides_detail <- data.frame()
+
+for(i in 1:length(drivers)){
+  
+  print(i)
+  #progress(i,progress.bar = T,max.value = length(drivers))
+  temp_driver_data<- subset(driver_job,Driver_Id==drivers[i],)
+  driver_rides_detail[i,'Driver_Id'] <- drivers[i]
+  # rides
+  first_ride <- get_first_ride(temp_driver_data)
+  last_ride <- get_latest_ride(temp_driver_data)
+  date_latest <- last_ride$Delivery_Date
+  date_first <- first_ride$Delivery_Date
+  
+  driver_rides_detail[i,'tenure(in_days)'] <- as.numeric(difftime(date_latest,date_first,units = 'days'))+1
+  driver_rides_detail[i,'last_ride']<-as.character(date_latest)
+  driver_rides_detail[i,'rides_in_last_1_month'] <- nrow(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05', ])
+  driver_rides_detail[i,'rides_in_last_3_month'] <- nrow(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03', ])
+  driver_rides_detail[i,'rides_in_last_6_month'] <- nrow(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01', ])
+  driver_rides_detail[i,'rides_in_last_1_year'] <- nrow(temp_driver_data)
+  #average total payment
+  driver_rides_detail[i,'average_total_payment_1_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','Total_Pay' ],na.rm = T)
+  driver_rides_detail[i,'average_total_payment_3_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','Total_Pay'],na.rm = T)
+  driver_rides_detail[i,'average_total_payment_6_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','Total_Pay'],na.rm = T)
+  driver_rides_detail[i,'average_total_payment_1_year '] <- mean(temp_driver_data[,'Total_Pay'],na.rm = T)
+  #sum total payment
+  driver_rides_detail[i,'sum_total_payment_1_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','Total_Pay'],na.rm = T)
+  driver_rides_detail[i,'sum_total_payment_3_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','Total_Pay'],na.rm = T)
+  driver_rides_detail[i,'sum_total_payment_6_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','Total_Pay'],na.rm = T)
+  driver_rides_detail[i,'sum_total_payment_1_year '] <- sum(temp_driver_data[,'Total_Pay'],na.rm = T)
+  #average_standard_payment
+  driver_rides_detail[i,'average_standard_payment_1_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','Standard_Pay_Ammount' ],na.rm = T)
+  driver_rides_detail[i,'average_standard_payment_3_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'average_standard_payment_6_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'average_standard_payment_1_year '] <- mean(temp_driver_data[,'Standard_Pay_Ammount'],na.rm = T)
+  #total_standard_payment
+  driver_rides_detail[i,'sum_standard_payment_1_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'sum_standard_payment_3_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'sum_standard_payment_6_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'sum_standard_payment_1_year '] <- sum(temp_driver_data[,'Standard_Pay_Ammount'],na.rm = T)
+  #average_non_standard_payment
+  driver_rides_detail[i,'average_non_standard_payment_1_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','Non_Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'average_non_standard_payment_3_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','Non_Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'average_non_standard_payment_6_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','Non_Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'average_non_standard_payment_1_year '] <- mean(temp_driver_data[,'Non_Standard_Pay_Ammount'],na.rm = T)
+  #total_non_standard_payment
+  driver_rides_detail[i,'sum_non_standard_payment_1_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','Non_Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'sum_non_standard_payment_3_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','Non_Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'sum_non_standard_payment_6_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','Non_Standard_Pay_Ammount'],na.rm = T)
+  driver_rides_detail[i,'sum_non_standard_payment_1_year '] <- sum(temp_driver_data[,'Non_Standard_Pay_Ammount'],na.rm = T)
+  #average_jobs
+  driver_rides_detail[i,'average_jobs_1_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','No_of_Jobs'],na.rm = T)
+  driver_rides_detail[i,'average_jobs_3_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','No_of_Jobs'],na.rm = T)
+  driver_rides_detail[i,'average_jobs_6_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','No_of_Jobs'],na.rm = T)
+  driver_rides_detail[i,'average_jobs_1_year '] <- mean(temp_driver_data[,'No_of_Jobs'],na.rm = T)
+  #total no.of jobs
+  driver_rides_detail[i,'total_jobs_1_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','No_of_Jobs' ],na.rm = T)
+  driver_rides_detail[i,'total_jobs_3_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','No_of_Jobs'],na.rm = T)
+  driver_rides_detail[i,'total_jobs_6_month '] <- sum(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','No_of_Jobs'],na.rm = T)
+  driver_rides_detail[i,'total_jobs_1_year '] <- sum(temp_driver_data[,'No_of_Jobs'],na.rm = T)
+  #avg satisfaction
+  driver_rides_detail[i,'average_satisfaction_1_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-05','VOC_SATISFACTION' ],na.rm = T)
+  driver_rides_detail[i,'average_satisfaction_3_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-03','VOC_SATISFACTION'],na.rm = T)
+  driver_rides_detail[i,'average_satisfaction_6_month '] <- mean(temp_driver_data[substr(as.character(temp_driver_data$Delivery_Date),1,7) >= '2018-01','VOC_SATISFACTION'],na.rm = T)
+  driver_rides_detail[i,'average_satisfaction_1_year '] <- mean(temp_driver_data[,'VOC_SATISFACTION'],na.rm = T)
+}
+driver_rides_detail$last_ride <- ymd(driver_rides_detail$last_ride)
+driver_rides_detail[, 4:39][is.na(driver_rides_detail[, 4:39])] <- 0
+driver_rides_detail[, 40:43][is.na(driver_rides_detail[, 40:43])] <- 0.5
+
+driver_rides_detail[driver_rides_detail$`tenure(in_days)`<=30,'Tenure(in_categories)'] <- 'less than or equal to a month'
+driver_rides_detail[driver_rides_detail$`tenure(in_days)`<=90 & driver_rides_detail$`tenure(in_days)`>30,'Tenure(in_categories)'] <- 'less than or equal to 3 month'
+driver_rides_detail[driver_rides_detail$`tenure(in_days)`<=180 & driver_rides_detail$`tenure(in_days)`>90,'Tenure(in_categories)'] <- 'less than or equal to 6 month'
+driver_rides_detail[driver_rides_detail$`tenure(in_days)`<=365 & driver_rides_detail$`tenure(in_days)`>180,'Tenure(in_categories)'] <- 'more than 6 month'
+write.csv(driver_rides_detail,'5. aggregated_driver_job_data_test_jan.csv')
+

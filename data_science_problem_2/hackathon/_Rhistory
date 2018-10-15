@@ -1,0 +1,512 @@
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+View(regression_data_test_jan)
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+library(readr)
+regression_data_jan <- read_csv("regression_data_jan.csv")
+View(regression_data_jan)
+names(regression_data_test_jan) <- names(regression_data_jan)
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+View(regression_data_test_last_month)
+library(readr)
+regression_data_test_last_month <- read_csv("regression_data_test_last_month.csv")
+View(regression_data_test_last_month)
+regression_data_test_jan<- regression_data_test_last_month
+regression_data_jan$X1<-NULL
+regression_data_test_jan$X1<-NULL
+regression_data_test_jan$churn_status<-NULL
+log_bin_test <- regression_data_test_jan
+load(file = "re_jan_train.rda")
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+library(readr)
+regression_data_jan <- read_csv("regression_data_jan.csv")
+View(regression_data_jan)
+names(regression_data_test_jan[,-1])<-make.names(names(regression_data_jan))
+regression_data_jan$X1<-NULL
+names(regression_data_test_jan[,-1])<-make.names(names(regression_data_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+load(file = "re_jan_train.rda")
+regression_data_test_last_month$X1<-NULL
+regression_data_test_last_month$churn_status<-NULL
+library(readr)
+regression_data_test_jan <- read_csv("regression_data_test_jan.csv")
+View(regression_data_test_jan)
+regression_data_test_jan$X1<-NULL
+names(regression_data_test_last_month[,-1])<-names(regression_data_test_jan)
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+pred<- predict(rf_jan_train,regression_data_test_last_month[,-1])
+names(regression_data_test_last_month)<-make.names(names(regression_data_test_last_month))
+pred<- predict(rf_jan_train,regression_data_test_last_month[,-1])
+pred<- predict(rf_jan_train,regression_data_test_jan[,-48])
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-48])
+library(readr)
+regression_data_test_last_month <- read_csv("regression_data_test_last_month.csv")
+View(regression_data_test_last_month)
+library(readr)
+regression_data_test_jan <- read_csv("regression_data_test_jan.csv")
+View(regression_data_test_jan)
+library(readr)
+regression_data_test_jan <- read_csv("regression_data_test_jan.csv")
+View(regression_data_test_jan)
+library(readr)
+regression_data_jan <- read_csv("regression_data_jan.csv")
+View(regression_data_jan)
+# predicting using alredy made model
+names(regression_data_jan)
+# predicting using alredy made model
+names(regression_data_test_jan)
+# predicting using alredy made model
+names(regression_data_test_last_month)
+names(regression_data_test_jan)
+View(regression_data_test_last_month)
+regression_data_test_jan$X1<-NULL
+log_bin_test <- regression_data_test_jan
+load(file = "re_jan_train.rda")
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-48])
+x<- round(pred,digits = 5)
+y<-as.factor(regression_data_test_jan$churn_status)
+unique(y)
+sdf<-as.data.frame(cbind(regression_data_test_jan$churn_status,x))
+sdf[sdf$x>=0.2,'churn_status']<-'High risk'
+sdf[sdf$x>0.17 & sdf$x<0.2,'churn_status']<-'Medium risk'
+sdf[sdf$x<=0.17, 'churn_status']<-'Low risk'
+sdf<-sdf[order(sdf$x),]
+sdf[sdf$x>=0.3,'will_churn']<-1
+sdf[sdf$x<0.3, 'will_churn']<-0
+names(sdf)<-c('Actual','Prob of churning','Category','will_churn')
+accuracy(sdf$Actual,sdf$will_churn)
+library(e1071)
+library(caret)
+#write.csv( ,'rf_next_one_month.csv')
+sdf$Actual<-as.factor(sdf$Actual)
+sdf$will_churn <- as.factor(sdf$will_churn)
+confusionMatrix(sdf$will_churn,sdf$Actual)
+library(readr)
+churn_data_last_month <- read_csv("churn_data_last_month.csv")
+View(churn_data_last_month)
+View(churn_data_last_month)
+churn_data_last_month<-churn_data_last_month[churn_data_last_month$last_ride >=''2018-05-01',]
+churn_statue_with_merged_data<- churn_statue_with_merged_data[churn_statue_with_merged_data$last_ride>='2018-03-01' & churn_statue_with_merged_data$last_ride<='2018-04-30',]
+churn_status_with_merged_data <- X8_churn_status_with_merged_data_test_jan
+index<- which(churn_status_with_merged_data$Driver_ID==59387)
+churn_status_with_merged_data<-churn_status_with_merged_data[-index,]
+sddata<-churn_status_with_merged_data
+write.csv(churn_status_with_merged_data,'churn_status_with_merged_data_removed_outlier.csv')
+##########################################################
+churn_status_with_merged_data <- read.csv('D:/Hackathon/PredictDriverChurn-DataSet/9. churn_status_with_merged_data_removed_outlier.csv')
+#churn_status_with_merged_data <- churn_status_with_merged_data_removed_outlier
+churn_status_with_merged_data$X1<-NULL
+churn_status_with_merged_data$X<-NULL
+#churn_status_with_merged_data$X1<-NULL
+#churn_status_with_merged_data$X1_1<-NULL
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+regression_data$`Tenure(in_categories)` <- as.character(regression_data$`Tenure(in_categories)`)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$`Tenure(in_categories)`)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$`Tenure(in_categories)` == cols_tenure_in_categories[1],'Tenure(in_categories)'] <- 1
+regression_data[regression_data$`Tenure(in_categories)` == cols_tenure_in_categories[2],'Tenure(in_categories)'] <- 2
+regression_data[regression_data$`Tenure(in_categories)` == cols_tenure_in_categories[3],'Tenure(in_categories)'] <- 3
+regression_data[regression_data$`Tenure(in_categories)` == cols_tenure_in_categories[4],'Tenure(in_categories)'] <- 4
+regression_data$`Tenure(in_categories)` <- as.numeric(as.character(regression_data$`Tenure(in_categories)`))
+regression_data$Driver_ID<-NULL
+regression_data$Driver_Id <- NULL
+write.csv(regression_data,'regression_data_test_jan.csv')
+##################################################################################################
+test_data_oct<- regression_data
+wq<-regression_data
+names(test_data_oct)<-names(regression_data)
+load(file = "random_forest_model.rda")
+load(file = "rf_jan_train.rda")
+names(regression_data) <- names(regression_data_jan)
+names(regression_data) <- make.names(names(regression_data))
+pred<- predict(rf_jan_train,regression_data[,-48])
+x<- as.factor(round(pred))
+y<-as.factor(regression_data$churn_status)
+unique(y)
+library(e1071)
+confusionMatrix(x,y)
+sdf<-as.data.frame(cbind(regression_data$churn_status,round(pred)))
+View(sdf[sdf$V1!=sdf$V2,])
+accuracy(sdf$V1,sdf$V2) #93.64
+#######################################################################################################
+regression_data$X<-NULL
+library(readxl)
+library(Metrics)
+library(randomForest)
+library(ggplot2)
+library(miscTools)
+library(caret)
+# Sample Indexes
+set.seed(150)
+indexes = sample(1:nrow(regression_data), size=0.7*nrow(regression_data))
+# Split data
+train_df = regression_data[indexes,]
+dim(train_df)
+test_df = regression_data[-indexes,]
+dim(test_df)
+View(new_name_train_data)
+library(randomForest)
+library(miscTools)
+new_name_train_data <- regression_data
+names(new_name_train_data) <- make.names(names(regression_data))
+rf_jan_train <- randomForest(churn_status ~ ., data = new_name_train_data,ntree =20)
+new_name_test_data <- test_df
+names(new_name_test_data)
+pred <-predict(rf,new_name_test_data[,-48])
+varImpPlot(rf_jan_train,sort = T,main = 'variable importance for Revenue')
+p <- ggplot(aes(x=actual,y=pred),
+data = data.frame(actual = new_name_test_data$churn_status,pred = pred))
+p + geom_point() +
+geom_abline(color = 'red') +
+ggtitle("Random Forest Regression for Churn rate")
+save(rf_jan_train,file = 'rf_jan_train.rda')
+rSquared(new_name_test_data$churn_status,new_name_test_data$churn_status - pred)
+mse(new_name_test_data$churn_status,pred)
+rmse(new_name_test_data$churn_status,pred)
+mape(new_name_test_data$churn_status,pred)
+x<- data.frame(abs(round(pred)),new_name_test_data$churn_status)
+View(x[x$abs.round.pred..!= x$new_name_test_data.churn_status,])
+#########################################################################################
+plot_coeffs_S <- function(mlr_model,label) {
+coeffs <- sort(coefficients(mlr_model), decreasing = TRUE)  ### changed
+mp <-barplot(coeffs, col="#3F97D0", xaxt='n', main=label)
+lablist <- names(coeffs)
+text(mp, par("usr")[3], labels = lablist, srt = 40, adj = c(.8,.8), xpd = TRUE,cex = .9)
+}
+mult_reg <- lm(formula = `churn_status`~.,data = regression_data_jan)
+coefficients <- mult_reg$coefficients
+features <- names(coef(mult_reg))
+imp_df<- as.data.frame(cbind(features,coefficients))
+imp_df <- imp_df[order(coefficients,decreasing = T),]
+plot_coeffs_S(mult_reg,'Regression Coefficients for Page Views')
+regression_data<- make.names(names(regression_data))
+pred<-predict(mult_reg,regression_data[,-48])
+summary(mult_reg)
+mse(test_df$churn_status,pred)
+rmse(test_df$churn_status,pred)
+mape(test_df$churn_status,pred)
+summary(pred)
+x<-data.frame(pred,regression_data$churn_status)
+x[x$pred>0.08,'res'] <- 1
+x[x$pred<=0.08,'res'] <- 0
+nrow(x[x$res != x$regression_data.churn_status,])
+######################################################################################
+library(lubridate)
+test_jan<-churn_status_with_merged_data[ymd( as.character(churn_status_with_merged_data$last_ride))<='2017-10-31',]
+x<- data.frame(cbind(abs(round(jan_pred)),test_jan$churn_status))
+View(x[x$X1!= x$X2,])
+jan_pred<- predict(rf,test_jan[,-48])
+#################################################################################################
+# Random Search
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+set.seed(seed)
+mtry <- sqrt(ncol(x))
+rf_random <- train(Class~., data=dataset, method="rf", metric=metric, tuneLength=15, trControl=control)
+print(rf_random)
+plot(rf_random)
+churn_data_last_month<-churn_data_last_month[churn_data_last_month$last_ride >='2018-05-01',]
+View(churn_data_last_month)
+View(churn_data_last_month)
+range(churn_data_last_month)
+range(churn_data_last_month$last_ride)
+write.csv(churn_data_last_month,'churn_data_last_month.csv')
+churn_status_with_merged_data <- churn_data_last_month
+#churn_status_with_merged_data <- churn_status_with_merged_data_removed_outlier
+churn_status_with_merged_data$X1<-NULL
+churn_status_with_merged_data$X<-NULL
+View(churn_status_with_merged_data)
+churn_status_with_merged_data$X1_1<-NULL
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$tenure.in_days.)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[1],'Tenure(in_categories)'] <- 1
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[2],'Tenure(in_categories)'] <- 2
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[3],'Tenure(in_categories)'] <- 3
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[4],'Tenure(in_categories)'] <- 4
+regression_data$tenure.in_days. <- as.numeric(as.character(regression_data$tenure.in_days.))
+regression_data$Driver_ID<-NULL
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+regression_data$tenure.in_days. <- as.character(regression_data$tenure.in_days.)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$tenure.in_days.)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[1],'Tenure(in_categories)'] <- 1
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[2],'Tenure(in_categories)'] <- 2
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[3],'Tenure(in_categories)'] <- 3
+regression_data[regression_data$tenure.in_days. == cols_tenure_in_categories[4],'Tenure(in_categories)'] <- 4
+regression_data$tenure.in_days. <- as.numeric(as.character(regression_data$tenure.in_days.))
+write.csv(regression_data,'regression_data_last_month_test.csv')
+View(regression_data)
+# predicting using alredy made model
+regression_data_test_jan <- regression_data
+View(regression_data_test_jan)
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-48])
+load(file = "re_jan_train.rda")
+pred<- predict(rf_jan_train,regression_data_test_jan[,-48])
+regression_data_test_jan$churn_status<-NULL
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+library(readr)
+regression_data_jan <- read_csv("regression_data_jan.csv")
+View(regression_data_jan)
+regression_data_jan$X1<-NULL
+View(regression_data_jan)
+View(regression_data_test_jan)
+names(regression_data_test_jan[,-1]) <-
+names(regression_data_jan)
+names(regression_data_jan)
+names(regression_data_test_jan[,-1])
+View(regression_data_jan)
+View(regression_data_test_jan)
+View(churn_status_with_merged_data)
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+regression_data$Tenure.in_categories. <- as.character(regression_data$Tenure.in_categories.)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$Tenure.in_categories.)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[1],'Tenure.in_categories.'] <- 1
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[2],'Tenure.in_categories.'] <- 2
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[3],'Tenure.in_categories.'] <- 3
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[4],'Tenure.in_categories.'] <- 4
+regression_data$Tenure.in_categories. <- as.numeric(as.character(regression_data$Tenure.in_categories.))
+write.csv(regression_data,'regression_data_last_month_test.csv')
+# predicting using alredy made model
+regression_data_test_jan<-regression_data
+log_bin_test <- regression_data_test_jan
+load(file = "re_jan_train.rda")
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+# predicting using alredy made model
+names(regression_data_test_jan) <- names(regression_data_jan)
+names(regression_data_test_jan) <- make.names(names(regression_data_test_jan))
+pred<- predict(rf_jan_train,regression_data_test_jan[,-1])
+regression_data$churn_status<-NULL
+regression_data_test_jan$churn_status<-NULL
+View(regression_data_jan)
+View(regression_data_test_jan)
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+regression_data$Tenure.in_categories. <- as.character(regression_data$Tenure.in_categories.)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$Tenure.in_categories.)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[1],'Tenure.in_categories.'] <- 1
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[2],'Tenure.in_categories.'] <- 2
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[3],'Tenure.in_categories.'] <- 3
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[4],'Tenure.in_categories.'] <- 4
+regression_data$Tenure.in_categories. <- as.numeric(as.character(regression_data$Tenure.in_categories.))
+regression_data$Driver_ID<-NULL
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+regression_data$Tenure.in_categories. <- as.character(regression_data$Tenure.in_categories.)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$Tenure.in_categories.)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[1],'Tenure.in_categories.'] <- 1
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[2],'Tenure.in_categories.'] <- 2
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[3],'Tenure.in_categories.'] <- 3
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[4],'Tenure.in_categories.'] <- 4
+regression_data$Tenure.in_categories. <- as.numeric(as.character(regression_data$Tenure.in_categories.))
+View(regression_data)
+# testing and training model
+regression_data$churn_status<-NULL
+View(regression_data_jan)
+View(regression_data_test_jan)
+View(regression_data_jan)
+regression_data<-churn_status_with_merged_data
+backup <- regression_data
+regression_data[is.na(regression_data$dr_status),'dr_status']<-'not specified'
+regression_data[is.na(regression_data$dr_paytype),'dr_paytype']<-'not specified'
+regression_data$dr_city <- NULL
+regression_data$dr_state <- NULL
+regression_data$dr_onduty <- NULL
+regression_data$last_ride <- NULL
+regression_data$dr_paytype <- as.character(regression_data$dr_paytype)
+regression_data$dr_wkbase <- as.character(regression_data$dr_wkbase)
+regression_data$dr_status <- as.character(regression_data$dr_status)
+regression_data$Tenure.in_categories. <- as.character(regression_data$Tenure.in_categories.)
+cols_dr_paytype <- unique(regression_data$dr_paytype)
+cols_dr_wrkbase <- unique(regression_data$dr_wkbase)
+cols_dr_status <- unique(regression_data$dr_status)
+cols_tenure_in_categories <-  unique(regression_data$Tenure.in_categories.)
+regression_data$churn_status <-  as.numeric(regression_data$churn_status)
+regression_data[regression_data$dr_paytype == cols_dr_paytype[1],'dr_paytype'] <- 1
+regression_data[regression_data$dr_paytype == cols_dr_paytype[2],'dr_paytype'] <- 2
+regression_data[regression_data$dr_paytype == cols_dr_paytype[3],'dr_paytype'] <- 3
+regression_data[regression_data$dr_paytype == cols_dr_paytype[4],'dr_paytype'] <- 4
+regression_data$dr_paytype <- as.numeric(regression_data$dr_paytype)
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[1],'dr_wkbase'] <- 1
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[2],'dr_wkbase'] <- 2
+regression_data[regression_data$dr_wkbase == cols_dr_wrkbase[3],'dr_wkbase'] <- 3
+regression_data$dr_wkbase <- as.numeric(as.character(regression_data$dr_wkbase))
+regression_data[regression_data$dr_status == cols_dr_status[1],'dr_status'] <- 1
+regression_data[regression_data$dr_status == cols_dr_status[2],'dr_status'] <- 2
+regression_data[regression_data$dr_status == cols_dr_status[3],'dr_status'] <- 3
+regression_data$dr_status <- as.numeric(as.character(regression_data$dr_status))
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[1],'Tenure.in_categories.'] <- 1
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[2],'Tenure.in_categories.'] <- 2
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[3],'Tenure.in_categories.'] <- 3
+regression_data[regression_data$Tenure.in_categories. == cols_tenure_in_categories[4],'Tenure.in_categories.'] <- 4
+regression_data$Tenure.in_categories. <- as.numeric(as.character(regression_data$Tenure.in_categories.))
+regression_data$churn_status<-NULL
+regression_data_test_jan<-regression_data
+# testing and training model
+names(regression_data)
+# testing and training model
+names(regression_data_jan)

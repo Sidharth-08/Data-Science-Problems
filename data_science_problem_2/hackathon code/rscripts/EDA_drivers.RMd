@@ -1,0 +1,98 @@
+---
+title: "EDA"
+output: html_notebook
+---
+79731 - master_data absent but present in drive_job
+aprox 1000 of master data entries on_duty inconsistent with drive job data
+as per our data 42.69% drivers churned
+
+33545 - max paymeny in 6 months outlier
+59387 - driver id for upper point
+
+```{r}
+
+# importing data
+library(readr)
+merged_aggregated_data <- read_csv("D:/Hackathon/PredictDriverChurn-DataSet/8. churn_status_with_merged_data.csv")
+merged_aggregated_data$X1 <- NULL
+
+```
+
+```{r}
+
+# fixing the NULL values in dr_wkbase
+
+merged_aggregated_data[merged_aggregated_data$dr_wkbase=='NULL','dr_wkbase']<-NA
+merged_aggregated_data$dr_wkbase <- as.numeric(merged_aggregated_data$dr_wkbase)
+
+```
+
+```{r}
+
+# drivers in each state
+states_drivers<- as.data.frame(sort(table(sddata$dr_state),decreasing = T))
+names(states_drivers) <- c('State','NUmber_of_Drivers')
+print(head((sort(table(merged_aggregated_data$dr_state),decreasing = T))))
+print(head((sort(table(merged_aggregated_data$dr_state)))))
+
+
+```
+
+```{r}
+
+# removing the cols not needed for regression
+merged_aggregated_data$dr_city<-NULL
+merged_aggregated_data$dr_state<-NULL
+merged_aggregated_data$dr_onduty <- NULL
+
+```
+
+```{r}
+churn_index <- which(names(merged_aggregated_data)=='churn_status')
+
+x <- merged_aggregated_data[,c(-1)] %>% 
+  correlate() %>% 
+  focus(churn_status)
+churn_cor  <- x
+
+x %>% 
+  mutate(rowname = factor(rowname, levels = rowname[order(churn_status)])) %>%  # Order by correlation strength
+  ggplot(aes(x = rowname, y =churn_status)) +
+    geom_bar(stat = "identity") +
+    ylab("Correlation with churn_status") +
+    xlab("Independent Variables") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+
+```{r}
+install.packages("usdm")
+install.packages("readxl")
+install.packages("fmsb")
+install.packages("ppcor")
+install.packages("plotly")
+install.packages("GGally")
+install.packages("datasets")
+install.packages("ggplot2")
+install.packages("ggfortify")
+install.packages("timeSeries")
+install.packages("MASS")
+install.packages("zoo")
+install.packages("fma")
+install.packages("TTR")
+install.packages("MuMIn")
+install.packages("knitr")
+install.packages("forecast")
+install.packages("Metrics")
+install.packages("pracma")
+install.packages("tseries")
+install.packages("stats")
+install.packages("tidyverse")
+install.packages("caret")
+install.packages("leaps")
+install.packages("corrr")
+install.packages("randomForest")
+install.packages("miscTools")
+library(stats)
+
+```
