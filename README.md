@@ -4,11 +4,11 @@ Some data science hackathon problems
 ### data_science_problem_1 
 You are asked to build the most accurate model you can to predict target column for data_test.csv. The metric to reflect accuracy can be defined by yourself. 
 
-'id': id column for data_train, data_test, respectively
-'num*': numerical features
-'der*': derived features from other features
-'cat*': categorical features
-'target': target column, only exists in data_train. it is binary.
+1. 'id': id column for data_train, data_test, respectively
+2. 'num*': numerical features
+3. 'der*': derived features from other features
+4. 'cat*': categorical features
+5. 'target': target column, only exists in data_train. it is binary.
 
 ### data_science_problem_2
 Create a Service Provider Employee (driver or a.k.a SPE) churn prediction model that will take a SPE’s historical attributes like, frequency of loads moved for XPO, payouts, shipment rejects, demographics, preferences and predict likelihood of driver churn as of today based on the latest information. 
