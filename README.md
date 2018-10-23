@@ -16,3 +16,9 @@ The system should rank the drivers based on the probability of churn and also cr
 
 ### data_science_problem_3
 For the next stage of our process, your goal is to build a machine learning model that is able to answer which customers are profitable, and decide who to approve and how much profit can the company make from them. 
+
+### data_science_problem_4
+The outcome of dataset containing orphan animals. 
+
+### data_science_problem_5
+Delivery time prediciton
