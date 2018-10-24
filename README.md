@@ -22,3 +22,6 @@ The outcome of dataset containing orphan animals.
 
 ### data_science_problem_5
 Delivery time prediciton
+
+### data_science_problem_6
+Predicting the funding status of startups
